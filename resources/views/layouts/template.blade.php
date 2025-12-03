@@ -28,7 +28,7 @@
         $headerCourses = App\Models\Course::all(); // Fetch all courses for the header
     @endphp --}}
 <section id="header">
-    @include('layouts.header',['courses' => $headerCourses])
+    @include('layouts.header')
   </section>
  <section id="pagecontent" class="mt-16">
     @yield('pagecontent')
