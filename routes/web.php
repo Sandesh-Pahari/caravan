@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('template');
+    return view('template.template');
 });
 
 Route::get('/dashboard', function () {
@@ -15,6 +16,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/trekking', fn () => view('admin.trekking.index'))->name('trekking.index');
+    Route::get('/rental', fn () => view('admin.rental.index'))->name('rental.index');
 });
 
 require __DIR__.'/auth.php';
