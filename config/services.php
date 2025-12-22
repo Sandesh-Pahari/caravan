@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET_KEY'),
+        'public_key' => env('STRIPE_PUBLIC_KEY'),
+    ],
+
+    'khalti' => [
+        'secret_key' => env('KHALTI_SECRET_KEY'),
+        'public_key' => env('KHALTI_PUBLIC_KEY'),
+    ],
+
+    'esewa' => [
+        'merchant_code' => env('ESEWA_MERCHANT_CODE', 'EPAYTEST'),
+        'url' => env('ESEWA_URL', 'https://uat.esewa.com.np/epay/main'),
+    ],
+
 ];
