@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Rental\RentalBookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,10 +20,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Public vehicle routes (user-facing)
+// Public vehicle & booking routes
 Route::prefix('rental')->name('rental.')->group(function () {
     Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
     Route::get('/vehicles/{vehicle}', [VehicleController::class, 'show'])->name('vehicles.show');
+
+    // Booking
+    Route::get('/bookings/create/{vehicle}', [RentalBookingController::class, 'create'])->name('bookings.create');
+    Route::post('/bookings', [RentalBookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{booking}/success', [RentalBookingController::class, 'bookingSuccess'])->name('bookings.success');
+
+    // Payment (with_driver only)
+    Route::get('/bookings/{booking}/payment', [RentalBookingController::class, 'payment'])->name('bookings.payment');
+    Route::post('/bookings/{booking}/pay/stripe', [RentalBookingController::class, 'payStripe'])->name('bookings.pay.stripe');
+    Route::post('/bookings/{booking}/pay/khalti', [RentalBookingController::class, 'payKhalti'])->name('bookings.pay.khalti');
+    Route::post('/bookings/{booking}/pay/esewa', [RentalBookingController::class, 'payEsewa'])->name('bookings.pay.esewa');
+    Route::get('/bookings/{booking}/payment/success', [RentalBookingController::class, 'paymentSuccess'])->name('bookings.payment.success');
 });
 
 // Admin vehicle routes (protected)
