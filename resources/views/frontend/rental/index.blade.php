@@ -51,8 +51,12 @@
                                         {{ $vehicle->color }}
                                     </span>
                                 </div>
-                                @auth
-                                    <div class="flex gap-3 mt-3 pt-3 border-t border-gray-100">
+                                <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between gap-3">
+                                    <a href="{{ route('rental.bookings.create', $vehicle) }}"
+                                       class="flex-1 text-center bg-brand-maroon text-white text-sm font-semibold px-3 py-2 rounded-lg hover:bg-red-800 transition">
+                                        Book Now
+                                    </a>
+                                    @auth
                                         <a href="{{ route('admin.rental.vehicles.edit', $vehicle) }}"
                                            class="text-sm text-brand-blue hover:text-brand-slate font-medium">Edit</a>
                                         <form action="{{ route('admin.rental.vehicles.destroy', $vehicle) }}"
@@ -63,8 +67,8 @@
                                             <button type="submit"
                                                     class="text-sm text-brand-maroon hover:text-red-800 font-medium">Delete</button>
                                         </form>
-                                    </div>
-                                @endauth
+                                    @endauth
+                                </div>
                             </div>
                         </div>
                     @endforeach
