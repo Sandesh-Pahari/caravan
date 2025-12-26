@@ -25,12 +25,22 @@
                             <h1 class="text-2xl font-bold text-brand-dark">{{ $vehicle->vehicle_name }}</h1>
                             <p class="text-sm text-gray-400 mt-1">{{ $vehicle->vehicle_number }}</p>
                         </div>
-                        @auth
-                            <a href="{{ route('admin.rental.vehicles.edit', $vehicle) }}"
-                               class="inline-flex items-center gap-1 bg-brand-blue text-white px-4 py-2 rounded-lg text-sm hover:bg-brand-slate transition">
-                                Edit
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <a href="{{ route('rental.bookings.create', $vehicle) }}"
+                               class="inline-flex items-center gap-2 bg-brand-maroon text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-red-800 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Book Now
                             </a>
-                        @endauth
+                            @auth
+                                <a href="{{ route('admin.rental.vehicles.edit', $vehicle) }}"
+                                   class="inline-flex items-center gap-1 bg-brand-blue text-white px-4 py-2 rounded-lg text-sm hover:bg-brand-slate transition">
+                                    Edit
+                                </a>
+                            @endauth
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-8">
