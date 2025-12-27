@@ -80,7 +80,9 @@ class RentalBookingController extends Controller
             ]);
 
         if ($response->failed()) {
-            return back()->with('error', 'Stripe payment could not be initiated. Please try another method.');
+            $stripeError = $response->json('error.message') ?? 'Stripe payment could not be initiated. Please try another method.';
+
+            return back()->with('error', $stripeError);
         }
 
         $booking->update(['payment_method' => 'stripe']);
