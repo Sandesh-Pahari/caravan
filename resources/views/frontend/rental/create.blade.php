@@ -126,12 +126,29 @@
                         </div>
                     </div>
 
+                    {{-- ── Public Fare ── --}}
+                    <h2 class="text-base font-semibold text-brand-blue mb-1 pb-2 border-b-2 border-brand-blue/20">
+                        Public Fare
+                        <span class="text-xs font-normal text-green-600 ml-2">(shown publicly)</span>
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 mt-4">
+                        <div>
+                            <label class="block text-sm font-medium text-brand-dark mb-1">Hold Fare Per Day (NPR) <span class="text-brand-maroon">*</span></label>
+                            <input type="number" name="fare_per_day" value="{{ old('fare_per_day') }}" step="0.01" min="0"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue @error('fare_per_day') border-brand-maroon @enderror">
+                            <p class="text-xs text-gray-400 mt-1">Only When vehicle is holded than a day</p>
+                            @error('fare_per_day')
+                                <p class="text-brand-maroon text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
                     {{-- ── Pricing (Backend Only) ── --}}
                     <h2 class="text-base font-semibold text-brand-blue mb-1 pb-2 border-b-2 border-brand-blue/20">
-                        Pricing Information
+                        Internal Pricing
                         <span class="text-xs font-normal text-gray-400 ml-2">(not shown publicly)</span>
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6 mt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6 mt-4">
 
                         {{-- Mileage --}}
                         <div>
@@ -139,6 +156,16 @@
                             <input type="number" name="mileage" value="{{ old('mileage') }}" step="0.01" min="0"
                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue @error('mileage') border-brand-maroon @enderror">
                             @error('mileage')
+                                <p class="text-brand-maroon text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Oil Price --}}
+                        <div>
+                            <label class="block text-sm font-medium text-brand-dark mb-1">Oil Price (NPR) <span class="text-brand-maroon">*</span></label>
+                            <input type="number" name="oil_price" value="{{ old('oil_price') }}" step="0.01" min="0"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue @error('oil_price') border-brand-maroon @enderror">
+                            @error('oil_price')
                                 <p class="text-brand-maroon text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>

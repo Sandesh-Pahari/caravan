@@ -27,8 +27,7 @@ class RentalBookingController extends Controller
         $vehicle = Vehicle::query()->findOrFail($request->vehicle_id);
 
         if ($request->booking_type === 'with_driver') {
-            $data['total_amount'] = $vehicle->driver_allowance * $request->days_taken
-                * (1 + $vehicle->profit_margin / 100);
+            $data['total_amount'] = $vehicle->fare_per_day * $request->days_taken;
             $data['payment_status'] = 'pending';
         }
 

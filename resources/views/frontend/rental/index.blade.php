@@ -51,6 +51,12 @@
                                         {{ $vehicle->color }}
                                     </span>
                                 </div>
+                                @if($vehicle->fare_per_day)
+                                    <p class="mt-2 text-sm font-semibold text-brand-maroon">
+                                        NPR {{ number_format($vehicle->fare_per_day, 0) }}
+                                        <span class="text-xs font-normal text-gray-400">/ day</span>
+                                    </p>
+                                @endif
                                 <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between gap-3">
                                     <a href="{{ route('rental.bookings.create', $vehicle) }}"
                                        class="flex-1 text-center bg-brand-maroon text-white text-sm font-semibold px-3 py-2 rounded-lg hover:bg-red-800 transition">

@@ -27,6 +27,8 @@ class StoreVehicleRequest extends FormRequest
             'mileage' => ['required', 'numeric', 'min:0'],
             'driver_allowance' => ['required', 'numeric', 'min:0'],
             'profit_margin' => ['required', 'numeric', 'min:0'],
+            'oil_price' => ['required', 'numeric', 'min:0'],
+            'fare_per_day' => ['required', 'numeric', 'min:0'],
         ];
     }
 

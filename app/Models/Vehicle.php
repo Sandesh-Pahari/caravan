@@ -21,6 +21,8 @@ class Vehicle extends Model
         'mileage',
         'driver_allowance',
         'profit_margin',
+        'oil_price',
+        'fare_per_day',
     ];
 
     public function images(): HasMany
@@ -35,6 +37,8 @@ class Vehicle extends Model
             'mileage' => 'decimal:2',
             'driver_allowance' => 'decimal:2',
             'profit_margin' => 'decimal:2',
+            'oil_price' => 'decimal:2',
+            'fare_per_day' => 'decimal:2',
         ];
     }
 }
