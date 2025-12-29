@@ -25,8 +25,14 @@ class StoreRentalBookingRequest extends FormRequest
         ];
 
         if ($this->input('booking_type') === 'with_driver') {
+            $rules['trip_type'] = ['required', 'in:one_way,round_trip'];
             $rules['pickup_address'] = ['required', 'string', 'max:500'];
             $rules['drop_address'] = ['required', 'string', 'max:500'];
+            $rules['distance_km'] = ['required', 'numeric', 'min:0.1'];
+            $rules['pickup_lat'] = ['required', 'numeric', 'between:-90,90'];
+            $rules['pickup_lng'] = ['required', 'numeric', 'between:-180,180'];
+            $rules['drop_lat'] = ['required', 'numeric', 'between:-90,90'];
+            $rules['drop_lng'] = ['required', 'numeric', 'between:-180,180'];
         }
 
         if ($this->input('booking_type') === 'self_drive') {
@@ -43,6 +49,11 @@ class StoreRentalBookingRequest extends FormRequest
         return [
             'vehicle_id.required' => 'Please select a vehicle.',
             'date.after_or_equal' => 'Booking date must be today or a future date.',
+            'trip_type.required' => 'Please select a trip type (one-way or round trip).',
+            'distance_km.required' => 'Please select both pickup and drop locations to calculate the distance.',
+            'distance_km.min' => 'Distance must be greater than 0. Please reselect your locations.',
+            'pickup_lat.required' => 'Please select your pickup location from the suggestions.',
+            'drop_lat.required' => 'Please select your drop location from the suggestions.',
             'identity_document.required' => 'Identity document is required for self drive.',
             'drivers_license.required' => 'Driver\'s license is required for self drive.',
             'identity_document.mimes' => 'Identity document must be a JPG, PNG, or PDF.',
