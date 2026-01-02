@@ -60,6 +60,41 @@
                         <p class="font-medium text-brand-dark text-xs">{{ $booking->drop_address }}</p>
                     </div>
                 </div>
+                @if($booking->fare_breakdown)
+                    @php $b = $booking->fare_breakdown; @endphp
+                    <div class="mt-4 pt-4 border-t border-gray-100 space-y-2 text-xs">
+                        <div class="flex justify-between text-gray-400">
+                            <span>
+                                Distance
+                                ({{ $b['actual_distance_km'] }} km
+                                @if($booking->trip_type === 'one_way')
+                                    × 2 one-way = {{ $b['chargeable_distance_km'] }} km charged
+                                @else
+                                    round-trip
+                                @endif
+                                )
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Fuel Cost</span>
+                            <span class="font-medium text-brand-dark">NPR {{ number_format($b['fuel_cost'], 2) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Driver Cost ({{ $booking->days_taken }} day{{ $booking->days_taken > 1 ? 's' : '' }})</span>
+                            <span class="font-medium text-brand-dark">NPR {{ number_format($b['driver_cost'], 2) }}</span>
+                        </div>
+                        @if($b['hold_cost'] > 0)
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Hold Fare ({{ $booking->days_taken - 1 }} extra day{{ ($booking->days_taken - 1) > 1 ? 's' : '' }})</span>
+                                <span class="font-medium text-brand-dark">NPR {{ number_format($b['hold_cost'], 2) }}</span>
+                            </div>
+                        @endif
+                        <div class="flex justify-between text-gray-400">
+                            <span>Service Charge</span>
+                            <span>NPR {{ number_format($b['profit_amount'], 2) }}</span>
+                        </div>
+                    </div>
+                @endif
                 <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
                     <span class="text-sm font-semibold text-brand-dark">Total Amount</span>
                     <span class="text-lg font-bold text-brand-blue">NPR {{ number_format($booking->total_amount, 2) }}</span>
