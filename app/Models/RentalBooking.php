@@ -10,6 +10,7 @@ class RentalBooking extends Model
     protected $fillable = [
         'vehicle_id',
         'booking_type',
+        'is_enquiry',
         'trip_type',
         'name',
         'email',
@@ -34,6 +35,7 @@ class RentalBooking extends Model
         'payment_method',
         'payment_reference',
         'status',
+        'admin_read_at',
     ];
 
     public function vehicle(): BelongsTo
@@ -45,6 +47,8 @@ class RentalBooking extends Model
     {
         return [
             'date' => 'date',
+            'is_enquiry' => 'boolean',
+            'admin_read_at' => 'datetime',
             'days_taken' => 'integer',
             'distance_km' => 'decimal:2',
             'chargeable_distance_km' => 'decimal:2',
