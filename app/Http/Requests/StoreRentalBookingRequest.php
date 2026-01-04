@@ -16,6 +16,7 @@ class StoreRentalBookingRequest extends FormRequest
         $rules = [
             'vehicle_id' => ['required', 'exists:vehicles,id'],
             'booking_type' => ['required', 'in:with_driver,self_drive'],
+            'enquiry_only' => ['nullable', 'boolean'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone_number' => ['required', 'string', 'max:20'],
