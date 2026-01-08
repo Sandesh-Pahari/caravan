@@ -198,7 +198,7 @@
         </a>
 
         <!-- Rental Department -->
-        <a href="{{ route('rental.vehicles.index') }}" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
+        <a href="{{ route('admin.rental.index') }}" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2 5h6l2-5h4M5 17a2 2 0 104 0 2 2 0 00-4 0zm10 0a2 2 0 104 0 2 2 0 00-4 0z" />
             </svg>
@@ -228,12 +228,62 @@
                     </div>
                     <!-- Header right content -->
                     <div class="flex items-center space-x-4">
-                        <button class="text-gray-600 hover:text-gray-800">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            </svg>
-                        </button>
+                        {{-- Notification Bell --}}
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open"
+                                    class="relative text-gray-600 hover:text-gray-800 focus:outline-none">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                @if(($unreadNotificationCount ?? 0) > 0)
+                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center leading-none">
+                                        {{ min($unreadNotificationCount, 99) }}
+                                    </span>
+                                @endif
+                            </button>
+
+                            {{-- Dropdown --}}
+                            <div x-show="open"
+                                 x-transition
+                                 @click.away="open = false"
+                                 class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden"
+                                 style="display:none">
+                                <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                                    <span class="text-sm font-semibold text-brand-dark">Notifications</span>
+                                    @if(($unreadNotificationCount ?? 0) > 0)
+                                        <form method="POST" action="{{ route('admin.notifications.mark-all-read') }}">
+                                            @csrf
+                                            <button type="submit" class="text-xs text-brand-blue hover:underline">
+                                                Mark all read
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                                <ul class="divide-y divide-gray-50 max-h-72 overflow-y-auto">
+                                    @forelse($latestNotifications ?? [] as $notification)
+                                        <li>
+                                            <a href="{{ $notification->data['url'] ?? route('admin.rental.enquiries.index') }}"
+                                               class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition {{ $notification->read_at ? 'opacity-60' : '' }}">
+                                                <span class="mt-1 flex-shrink-0 w-2 h-2 rounded-full {{ $notification->read_at ? 'bg-gray-300' : 'bg-brand-blue' }}"></span>
+                                                <div class="min-w-0">
+                                                    <p class="text-xs text-brand-dark leading-snug">{{ $notification->data['message'] ?? '' }}</p>
+                                                    <p class="text-xs text-gray-400 mt-0.5">{{ $notification->created_at->diffForHumans() }}</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @empty
+                                        <li class="px-4 py-6 text-center text-sm text-gray-400">No notifications yet.</li>
+                                    @endforelse
+                                </ul>
+                                <div class="border-t border-gray-100 px-4 py-2">
+                                    <a href="{{ route('admin.rental.enquiries.index') }}"
+                                       class="text-xs text-brand-blue hover:underline">
+                                        View all enquiries & bookings →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="relative">
                             <button class="flex items-center space-x-2">
                                
@@ -287,7 +337,7 @@
 
         <!-- Rental Department Box -->
         <div class="bg-brand-slate rounded-xl shadow-lg p-8 text-white hover:bg-brand-dark transition duration-200 h-full min-h-[180px] flex flex-col justify-between">
-            <a href="{{ route('rental.vehicles.index') }}" class="flex flex-col h-full justify-between">
+            <a href="{{ route('admin.rental.index') }}" class="flex flex-col h-full justify-between">
                 <div class="flex items-center space-x-6">
                     <div class="p-4 rounded-full bg-white/20 relative">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
