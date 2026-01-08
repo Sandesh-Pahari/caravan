@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RentalEnquiryController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Rental\RentalBookingController;
@@ -46,6 +47,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/rental/vehicles', fn () => redirect()->route('rental.vehicles.index'));
     Route::resource('rental/vehicles', VehicleController::class)->names('rental.vehicles')
         ->only(['create', 'store', 'edit', 'update', 'destroy']);
+
+    // Rental enquiries & paid bookings management
+    Route::get('/rental/enquiries', [RentalEnquiryController::class, 'index'])->name('rental.enquiries.index');
+    Route::get('/rental/enquiries/{rentalBooking}', [RentalEnquiryController::class, 'show'])->name('rental.enquiries.show');
+    Route::post('/notifications/mark-all-read', [RentalEnquiryController::class, 'markAllRead'])->name('notifications.mark-all-read');
 });
 
 require __DIR__.'/auth.php';
