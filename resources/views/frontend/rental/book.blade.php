@@ -61,6 +61,7 @@
             <div
                 x-data="{
                     type: '{{ old('booking_type', 'with_driver') }}',
+                    enquiryOnly: {{ old('enquiry_only', '0') }} == '1',
                     distanceReady: {{ old('distance_km') ? 'true' : 'false' }}
                 }"
                 @distance-calculated.window="distanceReady = true"
@@ -94,6 +95,7 @@
                     @csrf
                     <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
                     <input type="hidden" name="booking_type" :value="type">
+                    <input type="hidden" name="enquiry_only" :value="(type === 'self_drive' || enquiryOnly) ? '1' : '0'">
 
                     <div class="bg-white rounded-xl shadow-md p-6 space-y-6">
 
@@ -209,6 +211,35 @@
                                     </label>
                                 </div>
                                 @error('trip_type')<p class="text-brand-maroon text-xs mt-1">{{ $message }}</p>@enderror
+                            </div>
+
+                            {{-- Action Choice: Book & Pay Now / Send Enquiry Only --}}
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-brand-dark mb-2">
+                                    How would you like to proceed? <span class="text-brand-maroon">*</span>
+                                </label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="relative flex items-start gap-3 border-2 rounded-xl p-4 cursor-pointer transition"
+                                           :class="!enquiryOnly ? 'border-brand-blue bg-brand-blue/5' : 'border-gray-200'">
+                                        <input type="radio" @click="enquiryOnly = false"
+                                               :checked="!enquiryOnly"
+                                               class="mt-0.5 accent-brand-blue">
+                                        <div>
+                                            <p class="text-sm font-semibold text-brand-dark">Book &amp; Pay Now</p>
+                                            <p class="text-xs text-gray-400 mt-0.5">Proceed to payment immediately</p>
+                                        </div>
+                                    </label>
+                                    <label class="relative flex items-start gap-3 border-2 rounded-xl p-4 cursor-pointer transition"
+                                           :class="enquiryOnly ? 'border-brand-blue bg-brand-blue/5' : 'border-gray-200'">
+                                        <input type="radio" @click="enquiryOnly = true"
+                                               :checked="enquiryOnly"
+                                               class="mt-0.5 accent-brand-blue">
+                                        <div>
+                                            <p class="text-sm font-semibold text-brand-dark">Send Enquiry Only</p>
+                                            <p class="text-xs text-gray-400 mt-0.5">Admin will contact you to confirm and arrange payment</p>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
 
                             {{-- Pickup Address (Places autocomplete) --}}
@@ -364,8 +395,10 @@
                                     :class="(type === 'with_driver' && !distanceReady)
                                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         : 'bg-brand-maroon hover:bg-red-800 text-white'"
-                                    class="px-6 py-2 text-sm rounded-lg transition font-semibold">
-                                Confirm Booking
+                                    class="px-6 py-2 text-sm rounded-lg transition font-semibold"
+                                    x-text="(type === 'with_driver' && enquiryOnly)
+                                        ? 'Send Enquiry'
+                                        : (type === 'self_drive' ? 'Submit Enquiry' : 'Confirm & Continue to Payment')">
                             </button>
                         </div>
                     </div>
