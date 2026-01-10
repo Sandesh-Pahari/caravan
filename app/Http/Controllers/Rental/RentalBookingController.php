@@ -4,14 +4,19 @@ namespace App\Http\Controllers\Rental;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRentalBookingRequest;
+use App\Mail\EnquiryAcknowledgementMail;
 use App\Models\RentalBooking;
+use App\Models\User;
 use App\Models\Vehicle;
+use App\Notifications\NewRentalEnquiryNotification;
+use App\Notifications\RentalPaymentCompletedNotification;
 use App\Services\DistanceService;
 use App\Services\FareCalculationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use RuntimeException;
 
@@ -33,12 +38,17 @@ class RentalBookingController extends Controller
     {
         $vehicle = Vehicle::query()->findOrFail($request->vehicle_id);
 
-        // Exclude fields that the backend overrides or handles separately
+        $isEnquiry = $request->booking_type === 'self_drive'
+            || $request->boolean('enquiry_only');
+
         $data = $request->safe()->except([
             'identity_document',
             'drivers_license',
-            'distance_km', // backend overrides with API-verified value
+            'distance_km',
+            'enquiry_only',
         ]);
+
+        $data['is_enquiry'] = $isEnquiry;
 
         if ($request->booking_type === 'with_driver') {
             try {
@@ -78,12 +88,28 @@ class RentalBookingController extends Controller
 
         $booking = DB::transaction(fn () => RentalBooking::query()->create($data));
 
-        if ($booking->booking_type === 'with_driver') {
-            return redirect()->route('rental.bookings.payment', $booking)
-                ->with('success', 'Booking confirmed! Please complete your payment.');
+        if ($isEnquiry) {
+            $this->dispatchEnquiryNotifications($booking);
+
+            return redirect()->route('rental.bookings.success', $booking);
         }
 
-        return redirect()->route('rental.bookings.success', $booking);
+        return redirect()->route('rental.bookings.payment', $booking)
+            ->with('success', 'Booking confirmed! Please complete your payment.');
+    }
+
+    /** Send DB notification to all admins and acknowledgement email to customer. */
+    private function dispatchEnquiryNotifications(RentalBooking $booking): void
+    {
+        $booking->load('vehicle');
+
+        User::all()->each(fn (User $admin) => $admin->notify(new NewRentalEnquiryNotification($booking)));
+
+        try {
+            Mail::to($booking->email)->send(new EnquiryAcknowledgementMail($booking));
+        } catch (\Throwable) {
+            // Mail failure must not block the booking flow
+        }
     }
 
     public function payment(RentalBooking $booking): View
@@ -141,7 +167,7 @@ class RentalBookingController extends Controller
                 'customer_info' => [
                     'name' => $booking->name,
                     'email' => $booking->email,
-                    'phone' => substr($booking->phone_number, 0, 16), // Khalti max 16 chars
+                    'phone' => substr($booking->phone_number, 0, 16),
                 ],
             ]);
 
@@ -166,7 +192,6 @@ class RentalBookingController extends Controller
         $productCode = config('services.esewa.merchant_code');
         $signedFieldNames = 'total_amount,transaction_uuid,product_code';
 
-        // eSewa v2 requires an HMAC-SHA256 signature over the signed fields
         $signature = base64_encode(
             hash_hmac(
                 'sha256',
@@ -193,12 +218,11 @@ class RentalBookingController extends Controller
 
     public function paymentSuccess(Request $request, RentalBooking $booking): View
     {
-        $reference = $request->query('session_id')   // Stripe
-            ?? $request->query('transaction_id')      // Khalti
-            ?? $request->query('refId')               // eSewa v1 (legacy)
+        $reference = $request->query('session_id')
+            ?? $request->query('transaction_id')
+            ?? $request->query('refId')
             ?? null;
 
-        // eSewa v2 sends a base64-encoded JSON payload in the 'data' query param
         if (! $reference && $request->has('data')) {
             $esewaPayload = json_decode(base64_decode($request->query('data')), true);
             $reference = $esewaPayload['transaction_code'] ?? $esewaPayload['transaction_uuid'] ?? null;
@@ -209,6 +233,9 @@ class RentalBookingController extends Controller
             'payment_reference' => $reference,
             'status' => 'confirmed',
         ]);
+
+        $booking->load('vehicle');
+        User::all()->each(fn (User $admin) => $admin->notify(new RentalPaymentCompletedNotification($booking)));
 
         return view('frontend.rental.booking-success', compact('booking'));
     }
