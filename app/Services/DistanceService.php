@@ -7,27 +7,43 @@ use RuntimeException;
 class DistanceService
 {
     /**
-     * Road distance correction factor for Nepal.
-     *
-     * Nepal's terrain (hills, mountains, switchback roads) makes actual road
-     * distances roughly 1.4× the straight-line (Haversine) distance on average.
+     * Minimum acceptable ratio of road distance to straight-line distance.
+     * Road distance should never realistically be shorter than the aerial distance
+     * (small tolerance covers GPS rounding near identical points).
      */
-    private const ROAD_FACTOR = 1.4;
+    private const MIN_ROAD_RATIO = 0.9;
 
     /**
-     * Verify and return the estimated driving distance (km) between two coordinates.
+     * Maximum acceptable ratio of road distance to straight-line distance.
+     * Nepal's extreme mountain switchback routes can legitimately reach 4–5×.
+     * Anything beyond this is almost certainly a tampered value.
+     */
+    private const MAX_ROAD_RATIO = 5.0;
+
+    /**
+     * Fallback road correction factor when no client-side OSRM distance is available.
+     * Represents the average Nepal road-to-aerial ratio across mixed terrain.
+     */
+    private const FALLBACK_ROAD_FACTOR = 1.4;
+
+    /**
+     * Validate and return the driving distance (km) between two coordinates.
      *
-     * Calculated server-side from the submitted coordinates using the Haversine
-     * formula plus a Nepal road correction factor. This prevents any frontend
-     * manipulation of distance values while requiring no external API.
+     * When the browser submits an OSRM-computed distance, it is used directly
+     * after a Haversine bounds-check to detect manipulation. This gives real
+     * road-routing accuracy (switchbacks, mountain passes) without a server-side
+     * API call. If no client distance is provided, the Haversine × road factor
+     * fallback is used instead.
      *
-     * @throws RuntimeException when the locations are identical or too close to route
+     * @throws RuntimeException when locations are too close or the submitted
+     *                          distance falls outside plausible bounds
      */
     public function verify(
         float $pickupLat,
         float $pickupLng,
         float $dropLat,
         float $dropLng,
+        ?float $clientDistanceKm = null,
     ): float {
         $straightLineKm = $this->haversineKm($pickupLat, $pickupLng, $dropLat, $dropLng);
 
@@ -37,7 +53,19 @@ class DistanceService
             );
         }
 
-        return round($straightLineKm * self::ROAD_FACTOR, 2);
+        if ($clientDistanceKm !== null && $clientDistanceKm > 0) {
+            $ratio = $clientDistanceKm / $straightLineKm;
+
+            if ($ratio < self::MIN_ROAD_RATIO || $ratio > self::MAX_ROAD_RATIO) {
+                throw new RuntimeException(
+                    'The submitted distance appears invalid. Please reselect your pickup and drop locations and try again.'
+                );
+            }
+
+            return round($clientDistanceKm, 2);
+        }
+
+        return round($straightLineKm * self::FALLBACK_ROAD_FACTOR, 2);
     }
 
     /**
