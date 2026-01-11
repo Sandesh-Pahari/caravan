@@ -57,6 +57,7 @@ class RentalBookingController extends Controller
                     (float) $request->pickup_lng,
                     (float) $request->drop_lat,
                     (float) $request->drop_lng,
+                    $request->filled('distance_km') ? (float) $request->distance_km : null,
                 );
             } catch (RuntimeException $e) {
                 return back()->withInput()->with('error', $e->getMessage());
