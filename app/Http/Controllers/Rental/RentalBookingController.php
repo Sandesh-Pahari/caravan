@@ -68,6 +68,7 @@ class RentalBookingController extends Controller
                 $verifiedDistance,
                 (int) $request->days_taken,
                 $request->trip_type,
+                $request->filled('duration_seconds') ? (int) $request->duration_seconds : null,
             );
 
             $data['distance_km'] = $verifiedDistance;
