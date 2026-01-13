@@ -30,6 +30,7 @@ class StoreRentalBookingRequest extends FormRequest
             $rules['pickup_address'] = ['required', 'string', 'max:500'];
             $rules['drop_address'] = ['required', 'string', 'max:500'];
             $rules['distance_km'] = ['required', 'numeric', 'min:0.1'];
+            $rules['duration_seconds'] = ['nullable', 'integer', 'min:1'];
             $rules['pickup_lat'] = ['required', 'numeric', 'between:-90,90'];
             $rules['pickup_lng'] = ['required', 'numeric', 'between:-180,180'];
             $rules['drop_lat'] = ['required', 'numeric', 'between:-90,90'];
