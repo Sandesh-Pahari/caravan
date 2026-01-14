@@ -277,26 +277,36 @@
                                     <input type="hidden" name="drop_lng" id="drop_lng" value="{{ old('drop_lng') }}">
                                 </div>
 
-                                {{-- Hidden distance field --}}
+                                {{-- Hidden distance + duration fields --}}
                                 <input type="hidden" name="distance_km" id="distance_km" value="{{ old('distance_km') }}">
+                                <input type="hidden" name="duration_seconds" id="duration_seconds" value="{{ old('duration_seconds') }}">
 
-                                {{-- Distance Result Display --}}
+                                {{-- Distance + Route Info Display --}}
                                 <div id="distance_display" class="{{ old('distance_km') ? '' : 'hidden' }}">
-                                    <div class="bg-brand-blue/5 border border-brand-blue/20 rounded-lg px-4 py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            <span class="text-sm text-brand-dark font-medium">Calculated Distance</span>
+                                    <div class="bg-brand-blue/5 border border-brand-blue/20 rounded-lg px-4 py-3">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                                <span class="text-sm text-brand-dark font-medium">Route Estimate</span>
+                                            </div>
+                                            <span id="distance_text" class="text-sm font-bold text-brand-blue">
+                                                {{ old('distance_km', '—') }} km
+                                            </span>
                                         </div>
-                                        <span id="distance_text" class="text-sm font-bold text-brand-blue">
-                                            {{ old('distance_km', '—') }} km
-                                        </span>
+                                        <div id="travel_time_section" class="flex items-center justify-between mt-2 pt-2 border-t border-brand-blue/10
+                                            {{ old('duration_seconds') ? '' : 'hidden' }}">
+                                            <span class="text-xs text-gray-500">
+                                                Est. travel time: <span id="travel_time_text" class="font-medium text-brand-dark">—</span>
+                                            </span>
+                                            <span id="road_type_badge" class="text-xs font-semibold px-2 py-0.5 rounded-full">—</span>
+                                        </div>
                                     </div>
                                     <p class="text-xs text-gray-400 mt-1">
-                                        One-way bookings are charged for both directions (vehicle must return). Round-trip uses actual distance only.
+                                        One-way bookings are charged for both directions (vehicle must return). Fare reflects road difficulty (highway vs mountain).
                                     </p>
                                 </div>
 
@@ -434,11 +444,39 @@
             document.getElementById('distance_loading').classList.remove('hidden');
         }
 
-        function showDistance(km) {
+        function formatDuration(seconds) {
+            var h = Math.floor(seconds / 3600);
+            var m = Math.floor((seconds % 3600) / 60);
+            return h > 0 ? h + 'h ' + m + 'm' : m + 'm';
+        }
+
+        function applyRoadTypeBadge(avgSpeedKmh) {
+            var badge = document.getElementById('road_type_badge');
+            if (avgSpeedKmh >= 50) {
+                badge.textContent = 'Highway';
+                badge.className = 'text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700';
+            } else if (avgSpeedKmh >= 25) {
+                badge.textContent = 'Hilly Roads';
+                badge.className = 'text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700';
+            } else {
+                badge.textContent = 'Mountain Roads';
+                badge.className = 'text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700';
+            }
+        }
+
+        function showDistance(km, durationSeconds) {
             document.getElementById('distance_loading').classList.add('hidden');
             document.getElementById('distance_display').classList.remove('hidden');
             document.getElementById('distance_text').textContent = km + ' km';
             document.getElementById('distance_km').value = km;
+
+            if (durationSeconds && durationSeconds > 0) {
+                document.getElementById('duration_seconds').value = durationSeconds;
+                document.getElementById('travel_time_text').textContent = formatDuration(durationSeconds);
+                applyRoadTypeBadge(parseFloat(km) / (durationSeconds / 3600));
+                document.getElementById('travel_time_section').classList.remove('hidden');
+            }
+
             window.dispatchEvent(new CustomEvent('distance-calculated'));
         }
 
@@ -446,6 +484,7 @@
             document.getElementById('distance_loading').classList.add('hidden');
             document.getElementById('distance_display').classList.add('hidden');
             document.getElementById('distance_km').value = '';
+            document.getElementById('duration_seconds').value = '';
             window.dispatchEvent(new CustomEvent('distance-failed'));
         }
 
@@ -519,7 +558,8 @@
                         return;
                     }
                     var km = (data.routes[0].distance / 1000).toFixed(2);
-                    showDistance(km);
+                    var durationSeconds = Math.round(data.routes[0].duration);
+                    showDistance(km, durationSeconds);
                     updateMap(data.routes[0].geometry);
                 })
                 .catch(function () { showError(); });
@@ -609,6 +649,15 @@
         // Recalculate if returning from validation failure with stored coordinates
         if (pickupCoords && dropCoords) {
             calculateDistance();
+        } else {
+            // Restore road type badge from old() values without re-fetching OSRM
+            var oldDuration = parseInt(document.getElementById('duration_seconds').value, 10);
+            var oldDistance = parseFloat(document.getElementById('distance_km').value);
+            if (oldDuration > 0 && oldDistance > 0) {
+                document.getElementById('travel_time_text').textContent = formatDuration(oldDuration);
+                applyRoadTypeBadge(oldDistance / (oldDuration / 3600));
+                document.getElementById('travel_time_section').classList.remove('hidden');
+            }
         }
     }());
     </script>
