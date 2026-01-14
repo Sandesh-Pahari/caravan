@@ -105,15 +105,32 @@
                 <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                     <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Fare Breakdown</h2>
                     <div class="space-y-2 text-sm">
-                        <div class="flex justify-between text-gray-500">
+                        <div class="flex justify-between text-gray-500 items-start">
                             <span>Distance ({{ $b['actual_distance_km'] }} km
                                 @if($rentalBooking->trip_type === 'one_way')
                                     × 2 = {{ $b['chargeable_distance_km'] }} km charged
                                 @endif
                             )</span>
+                            @if(!empty($b['road_difficulty']) && !empty($b['avg_speed_kmh']))
+                                @php
+                                    $difficultyColor = match($b['road_difficulty']) {
+                                        'Highway'       => 'bg-green-100 text-green-700',
+                                        'Hilly Roads'   => 'bg-amber-100 text-amber-700',
+                                        default         => 'bg-red-100 text-red-700',
+                                    };
+                                @endphp
+                                <span class="px-2 py-0.5 rounded-full text-xs font-medium {{ $difficultyColor }}">
+                                    {{ $b['road_difficulty'] }} · {{ $b['avg_speed_kmh'] }} km/h avg
+                                </span>
+                            @endif
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Fuel Cost</span>
+                            <span class="text-gray-500">
+                                Fuel Cost
+                                @if(!empty($b['road_multiplier']) && $b['road_multiplier'] > 1.0)
+                                    <span class="text-xs text-gray-400">(×{{ $b['road_multiplier'] }} road factor)</span>
+                                @endif
+                            </span>
                             <span class="font-medium">NPR {{ number_format($b['fuel_cost'], 2) }}</span>
                         </div>
                         <div class="flex justify-between">
