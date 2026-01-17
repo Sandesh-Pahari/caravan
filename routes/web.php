@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RentalEnquiryController;
 use App\Http\Controllers\Admin\VehicleController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Rental\RentalBookingController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('template.template');
 });
+
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
