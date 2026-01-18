@@ -3,11 +3,16 @@
 namespace App\Notifications;
 
 use App\Models\RentalBooking;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\SerializesModels;
 
-class NewRentalEnquiryNotification extends Notification
+class NewRentalEnquiryNotification extends Notification implements ShouldQueue
 {
+    use Queueable, SerializesModels;
+
     public function __construct(public readonly RentalBooking $booking) {}
 
     public function via(object $notifiable): array
