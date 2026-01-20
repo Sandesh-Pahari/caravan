@@ -12,6 +12,7 @@ Route::get('/', function () {
     return view('template.template');
 });
 
+Route::get('/contact', fn () => view('frontend.contact.contact'))->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/dashboard', function () {
