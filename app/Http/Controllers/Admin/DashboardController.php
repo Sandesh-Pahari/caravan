@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactMessage;
 use App\Models\RentalBooking;
 use Illuminate\View\View;
 
@@ -18,6 +19,8 @@ class DashboardController extends Controller
             ->whereNull('admin_read_at')
             ->count();
 
+        $unreadContactCount = ContactMessage::query()->whereNull('read_at')->count();
+
         $unreadNotificationCount = auth()->user()->unreadNotifications()->count();
 
         $latestNotifications = auth()->user()
@@ -29,6 +32,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', [
             'unreadTrekkingCount' => 0,
             'unreadRentalCount' => $unreadRentalCount,
+            'unreadContactCount' => $unreadContactCount,
             'unreadNotificationCount' => $unreadNotificationCount,
             'latestNotifications' => $latestNotifications,
         ]);
