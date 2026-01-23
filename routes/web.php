@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RentalEnquiryController;
 use App\Http\Controllers\Admin\VehicleController;
@@ -56,6 +57,11 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/rental/enquiries', [RentalEnquiryController::class, 'index'])->name('rental.enquiries.index');
     Route::get('/rental/enquiries/{rentalBooking}', [RentalEnquiryController::class, 'show'])->name('rental.enquiries.show');
     Route::post('/notifications/mark-all-read', [RentalEnquiryController::class, 'markAllRead'])->name('notifications.mark-all-read');
+
+    // Contact messages
+    Route::get('/contact', [AdminContactController::class, 'index'])->name('contact.index');
+    Route::get('/contact/{contactMessage}', [AdminContactController::class, 'show'])->name('contact.show');
+    Route::post('/contact/mark-all-read', [AdminContactController::class, 'markAllRead'])->name('contact.mark-all-read');
 });
 
 require __DIR__.'/auth.php';
