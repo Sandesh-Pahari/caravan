@@ -43,29 +43,11 @@
             <span>About Us</span>
         </a>
 
-        <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-            <span>Our Courses</span>
-        </a>
+        
 
 
-        <!-- Menu -->
-        <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <span>Menu</span>
-        </a>
 
-        <!-- Alumni -->
-        <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            <span>Alumni</span>
-        </a>
+        
 
        <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,32 +71,9 @@
 
             
 
-        {{-- <a href="{{ route('aboutus') }}" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M8 11h.01M16 11h.01M12 17c2.5 0 4.5-1.5 5.5-3.5M6.5 13.5C7.5 15.5 9.5 17 12 17m0 0c-2.5 0-4.5-1.5-5.5-3.5M12 17v4m-6-8c0 4.418 3.582 8 8 8s8-3.582 8-8" />
-            </svg>
-            <span>Endorsed Brands</span>
-        </a> --}}
+       
 
-        <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.286 7.049 7.392.107c.969.014 1.371 1.24.588 1.81l-5.986 4.347 2.249 7.073c.285.898-.755 1.64-1.54 1.105L12 18.896l-6.94 4.522c-.784.535-1.825-.207-1.54-1.105l2.25-7.073-5.987-4.347c-.782-.57-.38-1.796.588-1.81l7.392-.107 2.286-7.049z" />
-            </svg>
-            <span>Placement Partners</span>
-        </a>
-
-        <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 2l3 6 6 .5-4.5 4.5 1 6-5.5-3-5.5 3 1-6L3 8.5 9 8l3-6z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M9 12l2 2 4-4" />
-            </svg>
-            <span>Endorsed Brands</span>
-        </a>
-
+        
         <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -140,7 +99,7 @@
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 
                     2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <span>Program Calendar</span>
+            <span>Trek Calendar</span>
         </a>
 
         <a href="" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
@@ -206,6 +165,20 @@
             @if(isset($unreadRentalCount) && $unreadRentalCount > 0)
                 <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 ml-auto">
                     {{ $unreadRentalCount }}
+                </span>
+            @endif
+        </a>
+
+        <!-- Contact Messages -->
+        <a href="{{ route('admin.contact.index') }}" class="flex items-center space-x-2 px-4 py-3 hover:bg-brand-slate rounded">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span>Contact</span>
+            @if(isset($unreadContactCount) && $unreadContactCount > 0)
+                <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 ml-auto">
+                    {{ $unreadContactCount }}
                 </span>
             @endif
         </a>
@@ -304,7 +277,7 @@
 
             <!-- Dashboard Stats Boxes -->
 <article class="max-w-[90%] mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8"> <!-- Increased gap to 8 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         
 
         <!-- Trekking Department Box -->
@@ -356,6 +329,34 @@
                 </div>
                 <div class="flex justify-end mt-4">
                     <svg class="w-6 h-6 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <!-- Contact Messages Box -->
+        <div class="bg-brand-maroon rounded-xl shadow-lg p-8 text-white hover:opacity-90 transition duration-200 h-full min-h-[180px] flex flex-col justify-between">
+            <a href="{{ route('admin.contact.index') }}" class="flex flex-col h-full justify-between">
+                <div class="flex items-center space-x-6">
+                    <div class="p-4 rounded-full bg-white/20 relative">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        @if(isset($unreadContactCount) && $unreadContactCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-amber-400 text-white text-sm rounded-full h-6 w-6 flex items-center justify-center animate-pulse">
+                            {{ $unreadContactCount }}
+                        </span>
+                        @endif
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">Contact Messages</h3>
+                        <p class="text-red-100 text-base mt-2">{{ $unreadContactCount ?? 0 }} Unread Messages</p>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <svg class="w-6 h-6 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </div>
