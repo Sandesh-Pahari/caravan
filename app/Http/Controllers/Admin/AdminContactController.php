@@ -43,4 +43,11 @@ class AdminContactController extends Controller
 
         return back()->with('success', 'All messages marked as read.');
     }
+
+    public function destroy(ContactMessage $contactMessage): RedirectResponse
+    {
+        $contactMessage->delete();
+
+        return redirect()->route('admin.contact.index')->with('success', 'Message deleted.');
+    }
 }
