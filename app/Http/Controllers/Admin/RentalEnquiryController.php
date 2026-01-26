@@ -60,6 +60,13 @@ class RentalEnquiryController extends Controller
         return view('admin.rental.enquiries.show', compact('rentalBooking'));
     }
 
+    public function destroy(RentalBooking $rentalBooking): RedirectResponse
+    {
+        $rentalBooking->delete();
+
+        return redirect()->route('admin.rental.enquiries.index')->with('success', 'Record deleted.');
+    }
+
     public function markAllRead(): RedirectResponse
     {
         auth()->user()->unreadNotifications()
