@@ -89,8 +89,17 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-3">
-                                    <a href="{{ route('admin.contact.show', $msg) }}"
-                                       class="text-brand-blue hover:underline text-xs font-medium">View</a>
+                                    <div class="flex items-center gap-3">
+                                        <a href="{{ route('admin.contact.show', $msg) }}"
+                                           class="text-brand-blue hover:underline text-xs font-medium">View</a>
+                                        <form method="POST" action="{{ route('admin.contact.destroy', $msg) }}"
+                                              onsubmit="return confirm('Delete this message permanently?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="text-red-500 hover:text-red-700 text-xs font-medium">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
