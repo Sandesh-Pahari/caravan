@@ -56,12 +56,14 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Rental enquiries & paid bookings management
     Route::get('/rental/enquiries', [RentalEnquiryController::class, 'index'])->name('rental.enquiries.index');
     Route::get('/rental/enquiries/{rentalBooking}', [RentalEnquiryController::class, 'show'])->name('rental.enquiries.show');
+    Route::delete('/rental/enquiries/{rentalBooking}', [RentalEnquiryController::class, 'destroy'])->name('rental.enquiries.destroy');
     Route::post('/notifications/mark-all-read', [RentalEnquiryController::class, 'markAllRead'])->name('notifications.mark-all-read');
 
     // Contact messages
     Route::get('/contact', [AdminContactController::class, 'index'])->name('contact.index');
     Route::get('/contact/{contactMessage}', [AdminContactController::class, 'show'])->name('contact.show');
     Route::post('/contact/mark-all-read', [AdminContactController::class, 'markAllRead'])->name('contact.mark-all-read');
+    Route::delete('/contact/{contactMessage}', [AdminContactController::class, 'destroy'])->name('contact.destroy');
 });
 
 require __DIR__.'/auth.php';
