@@ -4,10 +4,25 @@
     <div class="max-w-3xl mx-auto">
 
         {{-- Back --}}
-        <a href="{{ route('admin.rental.enquiries.index') }}"
-           class="inline-flex items-center gap-1 text-sm text-brand-blue hover:underline mb-6">
-            ← Back to Enquiries
-        </a>
+        <div class="flex items-center justify-between mb-6">
+            <a href="{{ route('admin.rental.enquiries.index') }}"
+               class="inline-flex items-center gap-1 text-sm text-brand-blue hover:underline">
+                ← Back to Enquiries
+            </a>
+            <form method="POST" action="{{ route('admin.rental.enquiries.destroy', $rentalBooking) }}"
+                  onsubmit="return confirm('Delete this record permanently?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete Record
+                </button>
+            </form>
+        </div>
 
         {{-- Type badge --}}
         <div class="flex items-center gap-3 mb-4">
