@@ -1,6 +1,17 @@
 @extends('template.template')
 
 @section('pagecontent')
+    {{-- Breadcrumb --}}
+    <div class="bg-white border-b border-gray-100">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-2 text-xs text-gray-400">
+            <a href="{{ url('/') }}" class="hover:text-brand-blue transition">Home</a>
+            <i class="fas fa-chevron-right text-[9px]"></i>
+            <a href="{{ route('rental.vehicles.index') }}" class="hover:text-brand-blue transition">Vehicles</a>
+            <i class="fas fa-chevron-right text-[9px]"></i>
+            <span class="text-brand-dark font-medium">{{ $vehicle->vehicle_name }}</span>
+        </div>
+    </div>
+
     <div class="bg-brand-bg min-h-screen">
         <div class="max-w-5xl mx-auto px-4 py-10">
             <a href="{{ route('rental.vehicles.index') }}"
