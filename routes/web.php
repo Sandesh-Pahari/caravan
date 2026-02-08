@@ -13,11 +13,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $featuredVehicles = \App\Models\Vehicle::query()->latest()->limit(3)->get();
-    $faqs = \App\Models\Faq::active()->get();
-    $policies = \App\Models\Policy::active()->get();
+    $faqs = \App\Models\Faq::active()->limit(5)->get();
+    $policies = \App\Models\Policy::active()->limit(4)->get();
 
     return view('frontend.home', compact('featuredVehicles', 'faqs', 'policies'));
 })->name('home');
+
+Route::get('/faqs', function () {
+    $faqs = \App\Models\Faq::active()->get();
+
+    return view('frontend.faqs', compact('faqs'));
+})->name('faqs');
+
+Route::get('/policies', function () {
+    $policies = \App\Models\Policy::active()->get();
+
+    return view('frontend.policies', compact('policies'));
+})->name('policies');
 
 Route::get('/contact', fn () => view('frontend.contact.contact'))->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
