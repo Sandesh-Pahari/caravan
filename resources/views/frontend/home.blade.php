@@ -289,6 +289,14 @@
                     </div>
                 @endforeach
             </div>
+
+            <div class="text-center mt-8">
+                <a href="{{ route('faqs') }}"
+                   class="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue hover:text-brand-slate transition">
+                    View All FAQs
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
+            </div>
         </div>
     </section>
     @endif
@@ -323,6 +331,14 @@
                         </ul>
                     </div>
                 @endforeach
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="{{ route('policies') }}"
+                   class="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue hover:text-brand-slate transition">
+                    View All Policies
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
             </div>
         </div>
     </section>
