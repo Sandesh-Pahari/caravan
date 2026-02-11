@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminContactController;
+use App\Http\Controllers\Admin\AdminFaqController;
+use App\Http\Controllers\Admin\AdminPolicyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RentalEnquiryController;
 use App\Http\Controllers\Admin\VehicleController;
@@ -10,8 +12,12 @@ use App\Http\Controllers\Rental\RentalBookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('template.template');
-});
+    $featuredVehicles = \App\Models\Vehicle::query()->latest()->limit(3)->get();
+    $faqs = \App\Models\Faq::active()->get();
+    $policies = \App\Models\Policy::active()->get();
+
+    return view('frontend.home', compact('featuredVehicles', 'faqs', 'policies'));
+})->name('home');
 
 Route::get('/contact', fn () => view('frontend.contact.contact'))->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
@@ -58,6 +64,14 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/rental/enquiries/{rentalBooking}', [RentalEnquiryController::class, 'show'])->name('rental.enquiries.show');
     Route::delete('/rental/enquiries/{rentalBooking}', [RentalEnquiryController::class, 'destroy'])->name('rental.enquiries.destroy');
     Route::post('/notifications/mark-all-read', [RentalEnquiryController::class, 'markAllRead'])->name('notifications.mark-all-read');
+
+    // FAQs
+    Route::resource('faqs', AdminFaqController::class)->names('faqs')
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+
+    // Policies
+    Route::resource('policies', AdminPolicyController::class)->names('policies')
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
     // Contact messages
     Route::get('/contact', [AdminContactController::class, 'index'])->name('contact.index');
