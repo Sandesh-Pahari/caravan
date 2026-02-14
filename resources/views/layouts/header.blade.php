@@ -34,11 +34,11 @@
                        {{ request()->routeIs('contact') ? 'text-brand-blue bg-brand-blue/5' : 'text-gray-600 hover:text-brand-dark hover:bg-gray-50' }}">
                     Contact
                 </a>
-                <a href="{{ route('home') }}#faq"
+                <a href="{{ route('faqs') }}"
                    class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-dark hover:bg-gray-50 transition">
                     FAQ
                 </a>
-                <a href="{{ route('home') }}#policies"
+                <a href="{{ route('policies') }}"
                    class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-brand-dark hover:bg-gray-50 transition">
                     Policies
                 </a>
@@ -122,12 +122,12 @@
                 <i class="fas fa-envelope w-4 text-center text-xs opacity-60"></i>
                 Contact
             </a>
-            <a href="{{ route('home') }}#faq"
+            <a href="{{ route('faqs') }}"
                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
                 <i class="fas fa-circle-question w-4 text-center text-xs opacity-60"></i>
                 FAQ
             </a>
-            <a href="{{ route('home') }}#policies"
+            <a href="{{ route('policies') }}"
                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
                 <i class="fas fa-file-lines w-4 text-center text-xs opacity-60"></i>
                 Policies
