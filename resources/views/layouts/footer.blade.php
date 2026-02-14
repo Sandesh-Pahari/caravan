@@ -74,14 +74,14 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('home') }}#faq"
+                        <a href="{{ route('faqs') }}"
                            class="text-sm text-white/55 hover:text-white transition flex items-center gap-2">
                             <span class="w-1 h-1 rounded-full bg-brand-blue flex-shrink-0"></span>
                             FAQ
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('home') }}#policies"
+                        <a href="{{ route('policies') }}"
                            class="text-sm text-white/55 hover:text-white transition flex items-center gap-2">
                             <span class="w-1 h-1 rounded-full bg-brand-blue flex-shrink-0"></span>
                             Policies
