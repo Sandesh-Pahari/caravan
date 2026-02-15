@@ -104,7 +104,7 @@
                 {{-- Self Drive --}}
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition group">
                     <div class="w-12 h-12 bg-brand-maroon/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-brand-maroon group-hover:text-white transition">
-                        <i class="fas fa-steering-wheel text-brand-maroon group-hover:text-white text-lg transition"></i>
+                        <i class="fas fa-taxi text-brand-maroon group-hover:text-white text-lg transition"></i>
                     </div>
                     <h3 class="text-lg font-bold text-brand-dark mb-2">Self Drive</h3>
                     <p class="text-sm text-gray-500 leading-relaxed mb-4">
