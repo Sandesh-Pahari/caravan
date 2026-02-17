@@ -11,7 +11,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Rental\RentalBookingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/', fn () => view('frontend.landing'))->name('landing');
+
+Route::get('/vehicle-rental', function () {
     $featuredVehicles = \App\Models\Vehicle::query()->latest()->limit(3)->get();
     $faqs = \App\Models\Faq::active()->limit(5)->get();
     $policies = \App\Models\Policy::active()->limit(4)->get();
