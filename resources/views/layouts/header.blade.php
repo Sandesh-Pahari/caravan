@@ -5,7 +5,7 @@
             {{-- Brand Logo + Name --}}
             <a href="{{ route('home') }}" class="flex items-center gap-2.5 flex-shrink-0">
                 <div class="w-9 h-9 bg-brand-blue rounded-lg flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-van-shuttle text-white" style="font-size: 16px;"></i>
+                 <img src="{{ asset('car/logo.png') }}" alt="Caravan Logo">
                 </div>
                 <div class="leading-tight">
                     <span class="block text-base font-bold text-brand-dark tracking-tight">Caravan</span>
