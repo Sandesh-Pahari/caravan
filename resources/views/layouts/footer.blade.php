@@ -5,8 +5,8 @@
             {{-- Company Info --}}
             <div class="md:col-span-5">
                 <a href="{{ route('home') }}" class="flex items-center gap-2.5 mb-4">
-                    <div class="w-9 h-9 bg-brand-blue rounded-lg flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-van-shuttle text-white" style="font-size: 15px;"></i>
+                    <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <img src="{{ asset('car/logo.png') }}" alt="Caravan Logo" class="w-16 h-16">
                     </div>
                     <div class="leading-tight">
                         <span class="block text-base font-bold text-white tracking-tight">Caravan</span>
