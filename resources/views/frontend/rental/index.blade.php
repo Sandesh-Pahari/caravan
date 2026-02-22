@@ -41,7 +41,7 @@
             Rental Fleet
         </div>
         <h1 class="sg font-extrabold text-white leading-tight mb-3" style="font-size:clamp(2.5rem,6vw,4.5rem)">
-            Our<br>Vehicles.
+            Our Vehicles.
         </h1>
         <p class="text-gray-500 text-sm max-w-md leading-relaxed">Choose from our carefully maintained fleet for city commutes, mountain expeditions, and everything in between.</p>
     </div>
@@ -96,76 +96,87 @@
                         };
                     @endphp
                     <div class="veh-card group rounded-2xl overflow-hidden flex flex-col reveal"
-                         style="background:rgba(255,255,255,0.03); transition-delay:{{ ($i % 3) * 0.1 }}s">
+                         style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); transition-delay:{{ ($i % 3) * 0.1 }}s">
 
                         {{-- Image --}}
-                        <div class="relative overflow-hidden h-52 flex-shrink-0">
-                            <a href="{{ route('rental.vehicles.show', $vehicle) }}" class="block h-full">
+                        <div class="relative overflow-hidden">
+                            <a href="{{ route('rental.vehicles.show', $vehicle) }}">
                                 <img src="{{ Storage::url($vehicle->main_image) }}"
                                      alt="{{ $vehicle->vehicle_name }}"
-                                     class="veh-img w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                     class="veh-img w-full h-56 object-cover">
                             </a>
                             <span class="absolute top-3 right-3 text-xs font-black px-2.5 py-1 rounded-full shadow {{ $conditionBadge }}">
                                 {{ ucfirst($vehicle->condition) }}
                             </span>
-                            <span class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background:rgba(0,0,0,0.65)">
-                                <i class="fas fa-users text-brand-sky text-[10px]"></i>
-                                {{ $vehicle->number_of_seats }} Seats
-                            </span>
                         </div>
 
                         {{-- Body --}}
-                        <div class="p-5 flex flex-col flex-1">
-                            <a href="{{ route('rental.vehicles.show', $vehicle) }}">
-                                <h2 class="text-base font-bold text-white group-hover:text-brand-sky transition leading-snug">{{ $vehicle->vehicle_name }}</h2>
-                            </a>
-                            <div class="flex items-center gap-3 mt-1.5 mb-4">
-                                <span class="text-xs text-gray-600 flex items-center gap-1">
-                                    <i class="fas fa-hashtag text-[9px]"></i>
-                                    {{ $vehicle->vehicle_number }}
-                                </span>
-                                <span class="w-1 h-1 rounded-full" style="background:rgba(255,255,255,0.2)"></span>
-                                <span class="text-xs text-gray-600">{{ $vehicle->color }}</span>
-                            </div>
+                        <div class="p-6 flex flex-col flex-1">
 
-                            <div class="mt-auto pt-4 flex items-center gap-2" style="border-top:1px solid rgba(255,255,255,0.07)">
-                                <a href="{{ route('rental.bookings.create', $vehicle) }}"
-                                   class="flex-1 text-center bg-brand-maroon hover:bg-red-700 text-white text-sm font-bold px-3 py-2.5 rounded-xl transition">
-                                    Book Now
-                                </a>
-                                <a href="{{ route('rental.vehicles.show', $vehicle) }}"
-                                   class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 transition"
-                                   style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1)"
-                                   onmouseenter="this.style.borderColor='rgba(79,195,247,0.5)'; this.style.color='#4FC3F7'"
-                                   onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.color='rgb(107,114,128)'"
-                                   title="View Details">
-                                    <i class="fas fa-arrow-right text-sm"></i>
+                            {{-- Title --}}
+                            <div class="flex items-center justify-between">
+                                <a href="{{ route('rental.vehicles.show', $vehicle) }}">
+                                    <h2 class="text-lg font-semibold text-white group-hover:text-brand-sky transition capitalize">{{ $vehicle->vehicle_name }}</h2>
                                 </a>
                                 @auth
-                                    <a href="{{ route('admin.rental.vehicles.edit', $vehicle) }}"
-                                       class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 transition"
-                                       style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1)"
-                                       onmouseenter="this.style.borderColor='rgba(79,195,247,0.5)'; this.style.color='#4FC3F7'"
-                                       onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.color='rgb(107,114,128)'"
-                                       title="Edit">
-                                        <i class="fas fa-pen text-xs"></i>
-                                    </a>
-                                    <form action="{{ route('admin.rental.vehicles.destroy', $vehicle) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Delete this vehicle?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                                class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 transition"
-                                                style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1)"
-                                                onmouseenter="this.style.borderColor='rgba(139,30,45,0.6)'; this.style.color='#8B1E2D'"
-                                                onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.color='rgb(107,114,128)'"
-                                                title="Delete">
-                                            <i class="fas fa-trash text-xs"></i>
-                                        </button>
-                                    </form>
+                                    <div class="flex items-center gap-1.5">
+                                        <a href="{{ route('admin.rental.vehicles.edit', $vehicle) }}"
+                                           class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-600 hover:text-brand-sky transition"
+                                           style="background:rgba(255,255,255,0.06)">
+                                            <i class="fas fa-pen text-[10px]"></i>
+                                        </a>
+                                        <form action="{{ route('admin.rental.vehicles.destroy', $vehicle) }}"
+                                              method="POST" onsubmit="return confirm('Delete this vehicle?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-600 hover:text-brand-maroon transition"
+                                                    style="background:rgba(255,255,255,0.06)">
+                                                <i class="fas fa-trash text-[10px]"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 @endauth
+                            </div>
+
+                            {{-- Divider --}}
+                            <div class="my-4" style="border-top:1px solid rgba(255,255,255,0.08)"></div>
+
+                            {{-- Meta grid --}}
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(255,255,255,0.08)">
+                                        <i class="fas fa-users text-gray-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Seats</p>
+                                        <p class="text-sm font-semibold text-white">{{ $vehicle->number_of_seats }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(255,255,255,0.08)">
+                                        <i class="fas fa-palette text-gray-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Color</p>
+                                        <p class="text-sm font-semibold text-white">{{ $vehicle->color }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Buttons --}}
+                            <div class="mt-auto space-y-2">
+                                <a href="{{ route('rental.vehicles.show', $vehicle) }}"
+                                   class="block w-full text-center text-white text-sm font-medium py-3 rounded-xl transition"
+                                   style="background:rgba(255,255,255,0.08)"
+                                   onmouseenter="this.style.background='rgba(255,255,255,0.14)'"
+                                   onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
+                                    View Details
+                                </a>
+                                <a href="{{ route('rental.bookings.create', $vehicle) }}"
+                                   class="block w-full text-center bg-brand-maroon hover:bg-red-700 text-white text-sm font-bold py-3 rounded-xl transition">
+                                    Book Now
+                                </a>
                             </div>
                         </div>
                     </div>
