@@ -239,29 +239,73 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach($featuredVehicles as $i => $vehicle)
                 <div class="veh-card group rounded-2xl overflow-hidden reveal"
-                     style="background:rgba(255,255,255,0.03); transition-delay:{{ $i * 0.12 }}s">
-                    <div class="relative overflow-hidden h-52">
-                        <img src="{{ Storage::url($vehicle->main_image) }}"
-                             alt="{{ $vehicle->vehicle_name }}"
-                             class="veh-img w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <span class="absolute top-3 right-3 bg-brand-sky text-brand-dark text-[10px] font-black px-2.5 py-1 rounded-full uppercase">
+                     style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); transition-delay:{{ $i * 0.12 }}s">
+
+                    {{-- Image --}}
+                    <div class="relative overflow-hidden">
+                        <a href="{{ route('rental.vehicles.show', $vehicle) }}">
+                            <img src="{{ Storage::url($vehicle->main_image) }}"
+                                 alt="{{ $vehicle->vehicle_name }}"
+                                 class="veh-img w-full h-56 object-cover">
+                        </a>
+                        @php
+                            $conditionBadge = match($vehicle->condition) {
+                                'new'     => 'bg-green-500 text-white',
+                                'good'    => 'bg-brand-blue text-white',
+                                'average' => 'bg-amber-500 text-white',
+                                'old'     => 'bg-brand-maroon text-white',
+                                default   => 'bg-gray-500 text-white',
+                            };
+                        @endphp
+                        <span class="absolute top-3 right-3 text-[10px] font-black px-2.5 py-1 rounded-full shadow {{ $conditionBadge }}">
                             {{ ucfirst($vehicle->condition) }}
                         </span>
-                        <span class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background:rgba(0,0,0,0.6)">
-                            <i class="fas fa-users text-brand-sky text-[10px]"></i>
-                            {{ $vehicle->number_of_seats }} Seats
-                        </span>
                     </div>
-                    <div class="p-5">
-                        <a href="{{ route('rental.vehicles.show', $vehicle) }}">
-                            <h3 class="text-white font-bold text-base mb-1 group-hover:text-brand-sky transition">{{ $vehicle->vehicle_name }}</h3>
-                        </a>
-                        <p class="text-gray-600 text-xs mb-5">{{ $vehicle->vehicle_number }}</p>
-                        <a href="{{ route('rental.bookings.create', $vehicle) }}"
-                           class="block w-full text-center bg-brand-maroon hover:bg-red-700 text-white text-sm font-bold py-3 rounded-xl transition">
-                            Book Now
-                        </a>
+
+                    {{-- Body --}}
+                    <div class="p-6">
+                        <div class="flex items-center justify-between">
+                            <a href="{{ route('rental.vehicles.show', $vehicle) }}">
+                                <h3 class="text-lg font-semibold text-white group-hover:text-brand-sky transition capitalize">{{ $vehicle->vehicle_name }}</h3>
+                            </a>
+                        </div>
+
+                        <div class="my-4" style="border-top:1px solid rgba(255,255,255,0.08)"></div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(255,255,255,0.08)">
+                                    <i class="fas fa-users text-gray-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Seats</p>
+                                    <p class="text-sm font-semibold text-white">{{ $vehicle->number_of_seats }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 rounded-lg flex-shrink-0" style="background:rgba(255,255,255,0.08)">
+                                    <i class="fas fa-palette text-gray-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Color</p>
+                                    <p class="text-sm font-semibold text-white">{{ $vehicle->color }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <a href="{{ route('rental.vehicles.show', $vehicle) }}"
+                               class="block w-full text-center text-white text-sm font-medium py-3 rounded-xl transition"
+                               style="background:rgba(255,255,255,0.08)"
+                               onmouseenter="this.style.background='rgba(255,255,255,0.14)'"
+                               onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
+                                View Details
+                            </a>
+                            <a href="{{ route('rental.bookings.create', $vehicle) }}"
+                               class="block w-full text-center bg-brand-maroon hover:bg-red-700 text-white text-sm font-bold py-3 rounded-xl transition">
+                                Book Now
+                            </a>
+                        </div>
                     </div>
                 </div>
             @endforeach
