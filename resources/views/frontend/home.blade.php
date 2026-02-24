@@ -52,18 +52,27 @@
                           linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
         background-size: 64px 64px;
     }
+
+    /* Car float animation */
+    @keyframes car-float {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-14px); }
+    }
+    .car-float { animation: car-float 5s ease-in-out infinite; }
 </style>
 
 {{-- ── HERO ── --}}
-<section class="relative min-h-screen bg-[#0b0b0b] flex flex-col justify-center overflow-hidden">
+<section class="relative min-h-screen bg-[#0b0b0b] overflow-hidden">
     <div class="absolute inset-0 hero-grid pointer-events-none"></div>
     <div class="absolute top-0 left-0 right-0 h-px bg-white/5"></div>
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-1/3 -left-40 w-[600px] h-[500px] rounded-full blur-[130px]" style="background:rgba(79,195,247,0.06)"></div>
-        <div class="absolute bottom-10 right-0 w-[400px] h-[400px] rounded-full blur-[100px]" style="background:rgba(139,30,45,0.08)"></div>
+        <div class="absolute top-1/4 -left-40 w-[700px] h-[500px] rounded-full blur-[140px]" style="background:rgba(79,195,247,0.05)"></div>
+        <div class="absolute top-1/3 right-0 w-[500px] h-[400px] rounded-full blur-[120px]" style="background:rgba(139,30,45,0.06)"></div>
     </div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-28">
+    {{-- Text content — upper portion --}}
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-52 sm:pb-64 lg:pb-80">
+
         {{-- Badge --}}
         <div class="inline-flex items-center gap-2 border border-brand-sky/25 text-brand-sky text-xs font-semibold px-4 py-2 rounded-full mb-8" style="background:rgba(79,195,247,0.06)">
             <span class="w-1.5 h-1.5 bg-brand-sky rounded-full animate-pulse"></span>
@@ -73,8 +82,8 @@
         {{-- Heading --}}
         <h1 class="sg font-extrabold text-white uppercase leading-[0.9] tracking-tight mb-8"
             style="font-size: clamp(3rem, 10vw, 7rem)">
-            Explore<br>
-            <span class="text-brand-sky">Nepal</span><br>
+            Explore
+            <span class="text-brand-sky">Nepal</span>
             Your Way.
         </h1>
 
@@ -83,7 +92,7 @@
         </p>
 
         {{-- CTAs --}}
-        <div class="flex flex-wrap gap-4 mb-20">
+        <div class="flex flex-wrap gap-4 mb-16">
             <a href="{{ route('rental.vehicles.index') }}"
                class="inline-flex items-center gap-2 bg-brand-sky hover:bg-white text-brand-dark font-bold px-8 py-4 rounded-xl text-sm transition shadow-lg shadow-brand-sky/20">
                 <i class="fas fa-van-shuttle"></i>
@@ -91,7 +100,6 @@
             </a>
             <a href="{{ route('contact') }}"
                class="inline-flex items-center gap-2 border border-white/15 text-white font-semibold px-8 py-4 rounded-xl text-sm transition"
-               style="hover:background:rgba(255,255,255,0.06)"
                onmouseenter="this.style.background='rgba(255,255,255,0.06)'"
                onmouseleave="this.style.background='transparent'">
                 <i class="fas fa-phone"></i>
@@ -100,18 +108,33 @@
         </div>
 
         {{-- Stats --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-white/[0.07]">
+        {{-- <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-white/[0.07]">
             @foreach([['5+','Years of Service'],['50+','Happy Clients / Mo'],['10+','Fleet Vehicles'],['77','Districts Served']] as $stat)
                 <div>
                     <div class="sg text-4xl font-extrabold text-white mb-1">{{ $stat[0] }}</div>
                     <div class="text-[11px] text-gray-600 uppercase tracking-widest">{{ $stat[1] }}</div>
                 </div>
             @endforeach
-        </div>
+        </div> --}}
+    </div>
+
+    {{-- Car: pinned full-width at the bottom --}}
+    <div class="absolute inset-x-0 bottom-0 pointer-events-none select-none">
+        {{-- Glow behind car --}}
+        <div class="absolute inset-x-0 bottom-[30%] h-40 blur-[70px]" style="background:rgba(79,195,247,0.07)"></div>
+        {{-- Ground reflection line --}}
+        <div class="absolute inset-x-0 bottom-0 h-6 blur-2xl" style="background:rgba(79,195,247,0.18)"></div>
+        {{-- Car image --}}
+        <img src="{{ asset('car/car.png') }}"
+             alt="Caravan Rental Vehicle"
+             class="car-float w-full"
+             style="filter: drop-shadow(0 -10px 80px rgba(79,195,247,0.09)) drop-shadow(0 30px 60px rgba(0,0,0,0.95))">
+        {{-- Fade bottom edge into the next section --}}
+        <div class="absolute inset-x-0 bottom-0 h-28" style="background: linear-gradient(to bottom, transparent, #0b0b0b)"></div>
     </div>
 
     {{-- Scroll indicator --}}
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
         <span class="text-white/20 text-[10px] uppercase tracking-widest">Scroll</span>
         <div class="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"></div>
     </div>
